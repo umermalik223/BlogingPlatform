@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderate Comments</title>
+    <!-- Link to Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Link to Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7fafc;
+        }
+
+        .header {
+            background-color: #1a202c;
+            color: #edf2f7;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 15px;
+            color: #1a202c;
+        }
+
+        .button {
+            background-color: #38b2ac;
+            color: #1a202c;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #319795;
+        }
+
+        .button:active {
+            background-color: #2c7a7b;
+        }
+
+        .sort-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #e2e8f0;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #38b2ac;
+            color: #ffffff;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+
+        table tbody tr:hover {
+            background-color: #e2e8f0;
+        }
+
+        .actions form {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .actions button {
+            background-color: #3182ce;
+            color: #ffffff;
+            padding: 5px 10px;
+            margin: 2px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .actions button:hover {
+            background-color: #2b6cb0;
+        }
+
+        .actions button.reject {
+            background-color: #e53e3e;
+        }
+
+        .actions button.reject:hover {
+            background-color: #c53030;
+        }
+
+        .actions button.approve {
+            background-color: #48bb78;
+        }
+
+        .actions button.approve:hover {
+            background-color: #38a169;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header class="header">
+        <h1>Moderate Comments</h1>
+        <div>Welcome, <%= authorName %></div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="container">
+
+        <!-- Pending Comments Section -->
+        <section>
+            <h2>Pending Comments</h2>
+
+            <!-- Sort Buttons -->
+            <div class="sort-buttons">
+                <form action="/author/moderate-comments" method="GET" class="mr-2">
+                    <input type="hidden" name="sort" value="newest">
+                    <button type="submit" class="button">Sort by Newest</button>
+                </form>
+                <form action="/author/moderate-comments" method="GET">
+                    <input type="hidden" name="sort" value="oldest">
+                    <button type="submit" class="button">Sort by Oldest</button>
+                </form>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Comment ID</th>
+                            <th>Article ID</th>
+                            <th>Comment</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% comments.forEach(comment => { %>
+                            <tr>
+                                <td><%= comment.comment_id %></td>
+                                <td><%= comment.article_id %></td>
+                                <td><%= comment.comment %></td>
+                                <td><%= formatDate(comment.created_at) %></td>
+                                <td class="actions">
+                                    <form action="/author/moderate-comments/approve/<%= comment.comment_id %>" method="POST">
+                                        <button type="submit" class="button approve">Approve</button>
+                                    </form>
+                                    <form action="/author/moderate-comments/reject/<%= comment.comment_id %>" method="POST">
+                                        <button type="submit" class="button reject">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author Settings</title>
+    <!-- Link to Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Link to Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7fafc;
+        }
+
+        .header {
+            background-color: #1a202c;
+            color: #edf2f7;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #1a202c;
+        }
+
+        .button {
+            background-color: #38b2ac;
+            color: #1a202c;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #319795;
+        }
+
+        .button:active {
+            background-color: #2c7a7b;
+        }
+
+        .back-button {
+            background-color: #2d3748;
+            color: #ffffff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #4a5568;
+        }
+
+        .back-button:active {
+            background-color: #1a202c;
+        }
+
+        label {
+            color: #2d3748;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header class="header">
+        <h1>Author Settings</h1>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <!-- Settings Form Section -->
+        <section>
+            <h2>Update Blog Settings</h2>
+            <form action="/author/update-settings" method="POST">
+                <!-- Blog Title Input -->
+                <div class="mb-4">
+                    <label for="blogTitle" class="block text-sm font-medium">Blog Title</label>
+                    <input type="text" id="blogTitle" name="blogTitle" value="<%= currentSettings.blog_title %>"
+                        placeholder="Enter your blog title" required
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                </div>
+
+                <!-- Author Name Input -->
+                <div class="mb-4">
+                    <label for="authorName" class="block text-sm font-medium">Author Name</label>
+                    <input type="text" id="authorName" name="authorName" value="<%= currentSettings.author_name %>" required
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex justify-end">
+                    <button type="submit"
+                        class="button">Update Settings</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Back Button -->
+        <div class="flex justify-start mt-4">
+            <a href="/author/home"
+                class="back-button">Back to Author Home Page</a>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

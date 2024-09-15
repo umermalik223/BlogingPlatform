@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author Home Page</title>
+    <!-- Link to Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Link to Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7fafc;
+        }
+
+        .header {
+            background-color: #1a202c;
+            color: #edf2f7;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 15px;
+            color: #1a202c;
+        }
+
+        .button {
+            background-color: #38b2ac;
+            color: #1a202c;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #319795;
+        }
+
+        .button:active {
+            background-color: #2c7a7b;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #e2e8f0;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #38b2ac;
+            color: #ffffff;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+
+        table tbody tr:hover {
+            background-color: #e2e8f0;
+        }
+
+        .actions a,
+        .actions form {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .actions button {
+            background-color: #3182ce;
+            color: #ffffff;
+            padding: 5px 10px;
+            margin: 2px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .actions button:hover {
+            background-color: #2b6cb0;
+        }
+
+        .actions button.delete {
+            background-color: #e53e3e;
+        }
+
+        .actions button.delete:hover {
+            background-color: #c53030;
+        }
+
+        .actions button.publish {
+            background-color: #48bb78;
+        }
+
+        .actions button.publish:hover {
+            background-color: #38a169;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header class="header">
+        <h1>Author Home Page</h1>
+        <div>Welcome, <%= authorName %></div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <!-- Blog Information Section -->
+        <section>
+            <h2><%= blogTitle %></h2>
+            <p class="mb-6"><span class="font-semibold">Author:</span> <%= authorName %></p>
+            <div class="flex justify-center space-x-4 mb-10">
+                <form action="/author/update-settings" method="get">
+                    <button class="button">Settings</button>
+                </form>
+                <form action="/author/create-draft" method="post">
+                    <button class="button">Create New Draft</button>
+                </form>
+                <form action="/author/moderate-comments" method="get">
+                    <button class="button">Moderate Comments</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Published Articles Section -->
+        <section>
+            <h2>Published Articles</h2>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Created</th>
+                            <th>Published</th>
+                            <th>Last Modified</th>
+                            <th>Reads</th>
+                            <th>Likes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% publishedArticles.forEach(article => { %>
+                            <tr>
+                                <td><%= article.title %></td>
+                                <td><%= article.created_at %></td>
+                                <td><%= article.published_at %></td>
+                                <td><%= article.last_modified %></td>
+                                <td><%= article.reads %></td>
+                                <td><%= article.likes %></td>
+                                <td class="actions">
+                                    <a href="/reader/article/<%= article.article_id %>" class="button">Read</a>
+                                    <form action="/author/delete-article/<%= article.article_id %>" method="POST" class="inline">
+                                        <button type="submit" class="button delete">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Draft Articles Section -->
+        <section>
+            <h2>Draft Articles</h2>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Created</th>
+                            <th>Last Modified</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% draftArticles.forEach(article => { %>
+                            <tr>
+                                <td><%= article.title %></td>
+                                <td><%= article.created_at %></td>
+                                <td><%= article.last_modified %></td>
+                                <td class="actions">
+                                    <a href="/author/edit-article/<%= article.article_id %>" class="button">Edit</a>
+                                    <form action="/author/publish-article/<%= article.article_id %>" method="POST" class="inline">
+                                        <button class="button publish">Publish</button>
+                                    </form>
+                                    <form action="/author/delete-article/<%= article.article_id %>" method="POST" class="inline">
+                                        <button class="button delete">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+
+</html>
